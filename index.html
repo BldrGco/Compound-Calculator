@@ -3,246 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compound Growth Calculator</title>
+    <title>1% Better Calculator: The Compound Effect</title>
+    <!-- Import Chart.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
+        /* Modern, clean styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            background-color: #f4f7fa;
-            padding: 20px;
+            background-color: #f5f7fa;
             color: #333;
+            line-height: 1.6;
         }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            background-color: #f9f9f9;
-            color: #555;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input[type="range"] {
-            max-width: 500px;
-        }
-
-        .input-group input[type="range"]:focus {
-            outline: none;
-        }
-
-        .input-group span {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #4CAF50;
-        }
-
-        .results {
-            padding: 20px;
-            margin-top: 30px;
-            background-color: #f0f4f7;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .results h2 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        .results p {
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
-
-        .chart-container {
-            width: 100%;
-            height: 400px;
-            margin-bottom: 20px;
-        }
-
-        footer {
+        
+        h1 {
             text-align: center;
-            padding: 20px;
-            background-color: #4CAF50;
-            color: white;
-            margin-top: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .control-group {
+            flex: 1;
+            min-width: 260px;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            accent-color: #3182ce;
+        }
+        
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+        
+        .range-value {
+            font-weight: 600;
+            color: #2b6cb0;
+        }
+        
+        .results {
+            background-color: #ebf8ff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .compound-value {
+            color: #2b6cb0;
+        }
+        
+        .linear-value {
+            color: #718096;
+        }
+        
+        .result-label {
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+        
+        .insights {
+            background-color: #f7fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .insights h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+        
+        .insights ul {
+            list-style-type: none;
+        }
+        
+        .insights li {
+            display: flex;
+            margin-bottom: 0.75rem;
+        }
+        
+        .insights li::before {
+            content: "•";
+            color: #3182ce;
+            font-weight: bold;
+            display: inline-block;
+            width: 1rem;
+            margin-right: 0.5rem;
+        }
+        
+        .insights strong {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .calculator-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
 
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .result-value {
+                font-size: 1.75rem;
+            }
+        }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>Compound Growth Calculator</h1>
-    <p>Visualize daily growth over time</p>
-</header>
-
-<div class="container">
-    <div class="input-group">
-        <label for="dailyImprovement">Daily Improvement (%):</label>
-        <input type="range" id="dailyImprovement" value="1" min="0" max="100" step="0.1">
-        <span id="dailyImprovementValue">1%</span>
+    <div class="calculator-container">
+        <h1>The 1% Better Calculator: Visualize Your Growth</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="dailyImprovement">Daily Improvement (%)</label>
+                <input 
+                    type="range" 
+                    id="dailyImprovement" 
+                    min="0.1" 
+                    max="5" 
+                    step="0.1" 
+                    value="1"
+                >
+                <div class="range-labels">
+                    <span>0.1%</span>
+                    <span class="range-value" id="improvementValue">1%</span>
+                    <span>5%</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="timeframe">Timeframe (Days)</label>
+                <input 
+                    type="range" 
+                    id="timeframe" 
+                    min="30" 
+                    max="365" 
+                    step="30" 
+                    value="365"
+                >
+                <div class="range-labels">
+                    <span>30 days</span>
+                    <span class="range-value" id="timeframeValue">365 days</span>
+                    <span>365 days</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results">
+            <div class="result-cards">
+                <div class="result-card">
+                    <div class="result-title">The Compound Effect</div>
+                    <div class="result-value compound-value" id="compoundValue">37.78x</div>
+                    <div class="result-label">Exponential Growth</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-title">Linear Addition</div>
+                    <div class="result-value linear-value" id="linearValue">4.65x</div>
+                    <div class="result-label">Simple Addition</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="growthChart"></canvas>
+        </div>
+        
+        <div class="insights">
+            <h2>Key Insights</h2>
+            <ul>
+                <li>
+                    <strong>Exponential vs. Linear:</strong> <span id="insightComparison">At 1% daily improvement over 365 days, you're not just 365% better - you're 37.78x better.</span>
+                </li>
+                <li>
+                    <strong>The Power of Small Shifts:</strong> Even tiny improvements compound dramatically over time.
+                </li>
+                <li>
+                    <strong>Consistency Matters:</strong> The curve steepens as time progresses - stay consistent with your improvements.
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="input-group">
-        <label for="timeframe">Timeframe (days):</label>
-        <input type="range" id="timeframe" value="30" min="1" max="365">
-        <span id="timeframeValue">30 days</span>
-    </div>
-
-    <div class="chart-container">
-        <canvas id="growthChart"></canvas>
-    </div>
-
-    <div class="results">
-        <h2>Results</h2>
-        <p><strong>Compound Growth:</strong> <span id="compoundGrowthResult"></span></p>
-        <p><strong>Linear Growth:</strong> <span id="linearGrowthResult"></span></p>
-    </div>
-</div>
-
-<footer>
-    <p>Compound Growth Calculator - Made for learning purposes</p>
-</footer>
-
-<script>
-    const dailyImprovementInput = document.getElementById('dailyImprovement');
-    const timeframeInput = document.getElementById('timeframe');
-    const dailyImprovementValue = document.getElementById('dailyImprovementValue');
-    const timeframeValue = document.getElementById('timeframeValue');
-    const compoundGrowthResult = document.getElementById('compoundGrowthResult');
-    const linearGrowthResult = document.getElementById('linearGrowthResult');
-
-    const ctx = document.getElementById('growthChart').getContext('2d');
-    const growthChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Compound Growth (1% Better Daily)',
-                    data: [],
-                    borderColor: '#4CAF50',
-                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                    tension: 0.1,
-                    borderWidth: 2
-                },
-                {
-                    label: 'Linear Addition',
-                    data: [],
-                    borderColor: '#2196F3',
-                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                    tension: 0.1,
-                    borderWidth: 2
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Days'
+    <script>
+        // Get elements
+        const dailyImprovementInput = document.getElementById('dailyImprovement');
+        const improvementValueDisplay = document.getElementById('improvementValue');
+        const timeframeInput = document.getElementById('timeframe');
+        const timeframeValueDisplay = document.getElementById('timeframeValue');
+        const compoundValueDisplay = document.getElementById('compoundValue');
+        const linearValueDisplay = document.getElementById('linearValue');
+        const insightComparison = document.getElementById('insightComparison');
+        
+        // Chart setup
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Compound Growth (1% Better Daily)',
+                        data: [],
+                        borderColor: '#3182ce',
+                        backgroundColor: 'rgba(49, 130, 206, 0.1)',
+                        tension: 0.1,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Linear Addition',
+                        data: [],
+                        borderColor: '#718096',
+                        backgroundColor: 'rgba(113, 128, 150, 0.1)',
+                        tension: 0.1,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Days'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Growth Factor'
+                        }
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Growth Factor'
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatNumber(context.raw);
+                            }
+                        }
                     }
                 }
             }
-        }
-    });
-
-    function calculateGrowth() {
-        const dailyImprovement = parseFloat(dailyImprovementInput.value) / 100;
-        const timeframe = parseInt(timeframeInput.value);
+        });
         
-        let compoundGrowth = 1;
-        let linearGrowth = 0;
-
-        const compoundGrowthData = [];
-        const linearGrowthData = [];
-        const labels = [];
-
-        for (let day = 1; day <= timeframe; day++) {
-            compoundGrowth *= (1 + dailyImprovement);
-            linearGrowth += 1 + dailyImprovement;
-
-            compoundGrowthData.push(compoundGrowth.toFixed(4));
-            linearGrowthData.push(linearGrowth.toFixed(4));
-            labels.push(day);
+        // Format numbers for display
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(2) + 'K';
+            } else {
+                return num.toFixed(2);
+            }
         }
-
-        growthChart.data.labels = labels;
-        growthChart.data.datasets[0].data = compoundGrowthData;
-        growthChart.data.datasets[1].data = linearGrowthData;
-
-        growthChart.update();
-
-        compoundGrowthResult.textContent = compoundGrowthData[compoundGrowthData.length - 1];
-        linearGrowthResult.textContent = linearGrowthData[linearGrowthData.length - 1];
-    }
-
-    dailyImprovementInput.addEventListener('input', () => {
-        dailyImprovementValue.textContent = dailyImprovementInput.value + '%';
+        
+        // Calculate and update the chart and results
+        function calculateGrowth() {
+            const dailyImprovement = parseFloat(dailyImprovementInput.value);
+            const timeframe = parseInt(timeframeInput.value);
+            
+            // Update display values
+            improvementValueDisplay.textContent = dailyImprovement + '%';
+            timeframeValueDisplay.textContent = timeframe + ' days';
+            
+            // Calculate growth
+            const chartLabels = [];
+            const compoundData = [];
+            const linearData = [];
+            
+            let compoundValue = 1;
+            let linearValue = 1;
+            
+            // Generate points for the chart
+            for (let day = 0; day <= timeframe; day++) {
+                // Only add data points at intervals to avoid overcrowding
+                if (day % Math.max(Math.floor(timeframe / 12), 1) === 0 || day === timeframe || day === 1) {
+                    chartLabels.push(day);
+                    compoundData.push(compoundValue);
+                    linearData.push(linearValue);
+                }
+                
+                // Calculate next values
+                compoundValue *= (1 + dailyImprovement / 100);
+                linearValue = 1 + (dailyImprovement * day / 100);
+            }
+            
+            // Final values
+            const finalCompound = compoundValue;
+            const finalLinear = linearValue;
+            
+            // Update chart
+            growthChart.data.labels = chartLabels;
+            growthChart.data.datasets[0].data = compoundData;
+            growthChart.data.datasets[1].data = linearData;
+            growthChart.update();
+            
+            // Update result displays
+            compoundValueDisplay.textContent = formatNumber(finalCompound) + 'x';
+            linearValueDisplay.textContent = formatNumber(finalLinear) + 'x';
+            
+            // Update insight text
+            insightComparison.textContent = `At ${dailyImprovement}% daily improvement over ${timeframe} days, you're not just ${(dailyImprovement * timeframe).toFixed(1)}% better - you're ${finalCompound.toFixed(2)}x better.`;
+        }
+        
+        // Event listeners
+        dailyImprovementInput.addEventListener('input', calculateGrowth);
+        timeframeInput.addEventListener('input', calculateGrowth);
+        
+        // Initialize on load
         calculateGrowth();
-    });
-
-    timeframeInput.addEventListener('input', () => {
-        timeframeValue.textContent = timeframeInput.value + ' days';
-        calculateGrowth();
-    });
-
-    // Initialize with default values
-    calculateGrowth();
-</script>
-
+    </script>
 </body>
 </html>

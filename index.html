@@ -59,6 +59,10 @@
             background-color: #e2e8f0;
             border-radius: 4px;
         }
+
+        .slider {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -71,12 +75,14 @@
 <div class="container">
     <div class="input-group">
         <label for="dailyImprovement">Daily Improvement (%):</label>
-        <input type="number" id="dailyImprovement" value="1" min="0" max="100" step="0.1">
+        <input type="range" id="dailyImprovement" value="1" min="0" max="100" step="0.1" class="slider">
+        <span id="dailyImprovementValue">1%</span>
     </div>
 
     <div class="input-group">
         <label for="timeframe">Timeframe (days):</label>
-        <input type="number" id="timeframe" value="30" min="1" max="365" step="1">
+        <input type="range" id="timeframe" value="30" min="1" max="365" step="1" class="slider">
+        <span id="timeframeValue">30 days</span>
     </div>
 
     <div class="chart-container">
@@ -93,6 +99,8 @@
 <script>
     const dailyImprovementInput = document.getElementById('dailyImprovement');
     const timeframeInput = document.getElementById('timeframe');
+    const dailyImprovementValue = document.getElementById('dailyImprovementValue');
+    const timeframeValue = document.getElementById('timeframeValue');
     const compoundGrowthResult = document.getElementById('compoundGrowthResult');
     const linearGrowthResult = document.getElementById('linearGrowthResult');
 
@@ -170,8 +178,15 @@
         linearGrowthResult.textContent = linearGrowthData[linearGrowthData.length - 1];
     }
 
-    dailyImprovementInput.addEventListener('input', calculateGrowth);
-    timeframeInput.addEventListener('input', calculateGrowth);
+    dailyImprovementInput.addEventListener('input', () => {
+        dailyImprovementValue.textContent = dailyImprovementInput.value + '%';
+        calculateGrowth();
+    });
+
+    timeframeInput.addEventListener('input', () => {
+        timeframeValue.textContent = timeframeInput.value + ' days';
+        calculateGrowth();
+    });
 
     // Initialize with default values
     calculateGrowth();

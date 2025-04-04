@@ -7,81 +7,129 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7fafc;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 0;
+            background-color: #f4f7fa;
+            padding: 20px;
+            color: #333;
         }
 
         header {
-            background-color: #3182ce;
+            background-color: #4CAF50;
             color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
         }
 
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .chart-container {
-            height: 400px;
-            margin-bottom: 2rem;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .input-group input {
-            padding: 0.5rem;
-            font-size: 1rem;
             width: 100%;
-            max-width: 250px;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input[type="range"] {
+            max-width: 500px;
+        }
+
+        .input-group input[type="range"]:focus {
+            outline: none;
+        }
+
+        .input-group span {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4CAF50;
         }
 
         .results {
-            font-size: 1.2rem;
-            margin-top: 2rem;
-            padding: 1rem;
-            background-color: #e2e8f0;
-            border-radius: 4px;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #f0f4f7;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .slider {
-            width: 100%;
+        .results h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #333;
         }
+
+        .results p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body>
 
 <header>
     <h1>Compound Growth Calculator</h1>
-    <p>Calculate how daily improvements add up over time</p>
+    <p>Visualize daily growth over time</p>
 </header>
 
 <div class="container">
     <div class="input-group">
         <label for="dailyImprovement">Daily Improvement (%):</label>
-        <input type="range" id="dailyImprovement" value="1" min="0" max="100" step="0.1" class="slider">
+        <input type="range" id="dailyImprovement" value="1" min="0" max="100" step="0.1">
         <span id="dailyImprovementValue">1%</span>
     </div>
 
     <div class="input-group">
         <label for="timeframe">Timeframe (days):</label>
-        <input type="range" id="timeframe" value="30" min="1" max="365" step="1" class="slider">
+        <input type="range" id="timeframe" value="30" min="1" max="365">
         <span id="timeframeValue">30 days</span>
     </div>
 
@@ -91,10 +139,14 @@
 
     <div class="results">
         <h2>Results</h2>
-        <p>Compound Growth: <span id="compoundGrowthResult"></span></p>
-        <p>Linear Growth: <span id="linearGrowthResult"></span></p>
+        <p><strong>Compound Growth:</strong> <span id="compoundGrowthResult"></span></p>
+        <p><strong>Linear Growth:</strong> <span id="linearGrowthResult"></span></p>
     </div>
 </div>
+
+<footer>
+    <p>Compound Growth Calculator - Made for learning purposes</p>
+</footer>
 
 <script>
     const dailyImprovementInput = document.getElementById('dailyImprovement');
@@ -113,16 +165,16 @@
                 {
                     label: 'Compound Growth (1% Better Daily)',
                     data: [],
-                    borderColor: '#3182ce',
-                    backgroundColor: 'rgba(49, 130, 206, 0.1)',
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
                     tension: 0.1,
                     borderWidth: 2
                 },
                 {
                     label: 'Linear Addition',
                     data: [],
-                    borderColor: '#718096',
-                    backgroundColor: 'rgba(113, 128, 150, 0.1)',
+                    borderColor: '#2196F3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
                     tension: 0.1,
                     borderWidth: 2
                 }
